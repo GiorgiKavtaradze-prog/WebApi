@@ -149,50 +149,6 @@ The API will be available at `https://localhost:7000` (or the configured port).
 | GET | `/api/orders` | Get all orders (admin) |
 | PUT | `/api/orders/{orderId}/status` | Update order status |
 
-## 🏗️ Architecture
-
-```mermaid
-graph TB
-    Client([👤 Client]) --> API[🌐 WebApp API]
-
-    subgraph APILayer[🔧 API Layer]
-        direction LR
-        Controllers[🎮 Controllers<br/>Auth, Products, Cart, Orders]
-        Middleware[⚙️ Middleware<br/>Exception Handling]
-    end
-
-    API --> Controllers
-    API --> Middleware
-
-    subgraph ServiceLayer[⚡ Service Layer]
-        direction LR
-        AuthService[🔐 Auth Service]
-        ProductService[📦 Product Service]
-        CartService[🛒 Cart Service]
-        OrderService[📋 Order Service]
-    end
-
-    Controllers --> AuthService
-    Controllers --> ProductService
-    Controllers --> CartService
-    Controllers --> OrderService
-
-    subgraph DataLayer[💾 Data Layer]
-        direction LR
-        DbContext[🗄️ AppDbContext<br/>Entity Framework]
-        Redis[🔴 Redis Cache]
-    end
-
-    ServiceLayer --> DbContext
-    ServiceLayer --> Redis
-
-    subgraph DatabaseLayer[🗄️ Database Layer]
-        SQLServer[(🎯 SQL Server<br/>Products, Users, Orders)]
-    end
-
-    DbContext --> SQLServer
-```
-
 ## 🗂️ Project Structure
 
 ```
@@ -322,14 +278,6 @@ The API uses a centralized exception handling middleware that:
 | Jwt:Issuer | JWT issuer | WebApp |
 | Jwt:Audience | JWT audience | WebAppUsers |
 | Jwt:ExpiresInMinutes | Token expiration time | 60 |
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 🧪 Testing
 
