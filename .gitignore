@@ -1,0 +1,86 @@
+# =============================
+# .NET Default Ignore Patterns
+# =============================
+
+# Build results
+bin/
+obj/
+build/
+out/
+
+# NuGet packages
+packages/
+*.nupkg
+*.snupkg
+
+# Visual Studio
+.vs/
+.vscode/
+*.csproj.user
+*.vbproj.user
+*.fsproj.user
+*.suo
+*.user
+*.sln.docstates
+*.opensdf
+*.sdf
+*.ipch
+*.sbr
+*.bsc
+
+# Rider
+.idea/
+*.DotSettings
+
+# ReSharper
+*.DotSettings.user
+
+# =============================
+# Project Specific
+# =============================
+
+# Logs
+Logs/
+*.log
+
+# Environment files
+appsettings.Production.json
+appsettings.Staging.json
+
+# Design files
+*.designer
+*.draft
+
+# =============================
+# OS Generated Files
+# =============================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# =============================
+# Testing
+# =============================
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+coverage/
+
+# =============================
+# Deployment
+# =============================
+
+# Publish folders
+publish/
