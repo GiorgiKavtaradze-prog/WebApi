@@ -75,7 +75,7 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "localhost";
+    options.Configuration = "localhost:";
 });
 
 builder.Services.AddAuthentication(options =>
