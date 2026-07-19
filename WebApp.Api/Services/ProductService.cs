@@ -38,7 +38,7 @@ namespace WebApp.Api.Services
 
             if(cacedData != null)
             {
-                _logger.LogInformation("Products list loaded from redis cache. key : {cacheKey}", cacheKey);
+                _logger.LogInformation($"Products list loaded from redis cache. key : {cacheKey}", cacheKey);
                 var cachedResult = JsonSerializer.Deserialize<ProductListResponse>(cacedData);
 
                 return (cachedResult!.Data, cachedResult.TotalCount);
@@ -77,8 +77,12 @@ namespace WebApp.Api.Services
             _logger.LogInformation("Retrieving products with pagination.");
 
             var data = _mapper.Map<IEnumerable<ProductDto>>(products);
-            var result = (data, totalCount);
-            var serialized = JsonSerializer.Serialize(result);
+            var response = new ProductListResponse
+            {
+                Data = data,
+                TotalCount = totalCount,
+            };
+            var serialized = JsonSerializer.Serialize(response);
             await _cache.SetStringAsync(
                 cacheKey,
                 serialized,
@@ -88,7 +92,7 @@ namespace WebApp.Api.Services
                     SlidingExpiration = TimeSpan.FromMinutes(1),
                 });
             _logger.LogInformation($"Products saved to redis cache.key : {cacheKey}", cacheKey);
-            return (result.data, result.totalCount);
+            return (response.Data, response.TotalCount);
         }
 
         public async Task<ProductDto?> GetProductByIdAsync(int id) 
@@ -98,12 +102,12 @@ namespace WebApp.Api.Services
             var cacedData = await _cache.GetStringAsync(cacheKey);
             if(cacedData != null)
             {
-                _logger.LogInformation("product with Id {ProductId} loaded from cache", id);
+                _logger.LogInformation($"product with Id {ProductId} loaded from cache", id);
 
                 return JsonSerializer.Deserialize<ProductDto>(cacedData);
             }
 
-            _logger.LogInformation("Product with ID {ProductId} not found redis in cache.Loadingfrom DB.", id);
+            _logger.LogInformation($"Product with ID {ProductId} not found redis in cache.Loadingfrom DB.", id);
 
             var product = await _context.Products.FindAsync(id);
             if (product == null)
@@ -131,7 +135,7 @@ namespace WebApp.Api.Services
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
             RemoveProductCaches();
-            _logger.LogInformation("Product created seccessfuly with ID: {ProductID}", product.Id);
+            _logger.LogInformation($"Product created seccessfuly with ID: {ProductId}", product.Id);
             return _mapper.Map<ProductDto>(product);
         }
 
@@ -140,7 +144,7 @@ namespace WebApp.Api.Services
             var product = await _context.Products.FindAsync(id);
             if(product == null)
             {
-                _logger.LogWarning("Product update faild. product widt ID: {ProductId} was not found.", id);
+                _logger.LogWarning($"Product update faild. product widt ID: {ProductId} was not found.", id);
                 return null;
             }
             _mapper.Map(dto, product);
@@ -154,7 +158,7 @@ namespace WebApp.Api.Services
             var product = await _context.Products.FindAsync(id);
             if(product == null)
             {
-                _logger.LogWarning("Product delete faild. product widt ID: {ProductId} was not found.", id);
+                _logger.LogWarning($"Product delete faild. product widt ID: {ProductId} was not found.", id);
                 return false;
             }
             _context.Products.Remove(product);

@@ -4,6 +4,6 @@
     {
         public IEnumerable<ProductDto> Data { get; set; } = new List<ProductDto>();
 
-        public int TotalCount { get; set; };
+        public int TotalCount { get; set; }
     }
 }
